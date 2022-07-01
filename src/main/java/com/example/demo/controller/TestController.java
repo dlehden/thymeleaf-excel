@@ -48,6 +48,4 @@ public class TestController {
         log.info(ordGroupVO.get(0).getOrdMstVO().getHbl_no());
        return "resulttype-map" + ordGroupVO.toString();
     }
-
-
 }
