@@ -1,13 +1,23 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.tika.Tika;
+import org.apache.tika.exception.TikaException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.vo.OrdCntrVO;
 import com.example.demo.vo.OrdMstVO;
@@ -17,7 +27,7 @@ import com.example.demo.vo.OrdMstVO;
 public class ThymeController {
 
     @RequestMapping("/")
-    String indexPage(Model model){
+   public String indexPage(Model model){
         OrdCntrVO ordCntrVO = new OrdCntrVO();
         ordCntrVO.setCntr_no("ABC");
         ordCntrVO.setCntr_type("20GP");
@@ -34,7 +44,7 @@ public class ThymeController {
     }
 
     @RequestMapping(value="/excel/cntrs" , method=RequestMethod.POST)
-    String excelUploadCntrData(Model model){
+   public String excelUploadCntrData(Model model){
         OrdCntrVO ordCntrVO = new OrdCntrVO();
         OrdMstVO ordMstVO = new OrdMstVO();
 
@@ -57,7 +67,7 @@ public class ThymeController {
 
     @RequestMapping(value="/cntrs" , method=RequestMethod.POST)
     @ResponseBody
-    String saveCntrs(OrdMstVO ordMstVO ){
+  public  String saveCntrs(OrdMstVO ordMstVO ){
         System.out.println(ordMstVO.getHbl_no());
         // OrdCntrVO ordCntrVO = new OrdCntrVO();
         // OrdMstVO ordMstVO = new OrdMstVO();
@@ -77,6 +87,19 @@ public class ThymeController {
         //  model.addAttribute("ordcntrvo", ordCntrVOs);
         //  model.addAttribute("ordmstvo", ordMstVO);
          return "/index :: #cntrList";
+    }
+
+
+    @RequestMapping(value="/excel/read" , method=RequestMethod.POST)
+   public String excelRead(@RequestParam("file1") MultipartFile file, Model model) throws TikaException, IOException { // 2
+
+        try (InputStream is = file.getInputStream();) {
+                    System.out.println("ABC");
+           
+        } catch (Exception e) {
+            throw new TikaException("ERROR");
+        }
+         return "index";
     }
 
 }
