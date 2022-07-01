@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.SampleMapper">
+
+    <resultMap type="com.example.demo.vo.OrdMstVO" id="ordMstVO">
+		<result column="hbl_no" property="hbl_no" />
+		<result column="svc_type" property="svc_type" />
+	</resultMap>
+    <resultMap type="com.example.demo.vo.OrdCntrVO" id="ordCntrVO">
+		<result column="cntr_no" property="cntr_no" />
+		<result column="cntr_type" property="cntr_type" />
+	</resultMap>
+    <resultMap type="com.example.demo.vo.OrdGroupVO" id="ordGroupVO">
+		<collection property="ordMstVO" resultMap="ordMstVO" />
+		<collection property="ordCntrVO" resultMap="ordCntrVO" />
+	</resultMap>
+
+
+    <select id="getOrdMgt" resultType="map">
+        SELECT mst.HBL_NO,mst.SVC_TYPE  ,cntr.CNTR_NO ,cntr.CNTR_TYPE 
+        FROM ORD_CTS_MST mst , ORD_CTS_CNTR cntr
+        WHERE mst.ORD_MNGT_NO  = cntr.ORD_MNGT_NO 
+    </select>
+<!--
+    <select id="getOrdMgt_group" resultType="com.example.demo.vo.OrdGroupVO">
+        SELECT ordMstVO.hbl_no,ordMstVO.svc_type  ,cntr.cntr_no ,cntr.cntr_type 
+        FROM ORD_CTS_MST ordMstVO , ORD_CTS_CNTR cntr
+        WHERE ordMstVO.ORD_MNGT_NO  = cntr.ORD_MNGT_NO 
+    </select>
+-->
+    <select id="getOrdMgt_group" resultMap="ordGroupVO">
+        SELECT ordMstVO.hbl_no,ordMstVO.svc_type  ,cntr.cntr_no ,cntr.cntr_type 
+        FROM ORD_CTS_MST ordMstVO , ORD_CTS_CNTR cntr
+        WHERE ordMstVO.ORD_MNGT_NO  = cntr.ORD_MNGT_NO 
+    </select>
+</mapper>

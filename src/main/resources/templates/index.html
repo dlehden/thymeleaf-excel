@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/index.css}" rel="stylesheet" type="text/css">
+    <title>홈페이지</title>
+</head>
+<body>
+    <h1>CNTR EXCEL INSERT</h1>
+    <form id="frm">
+    <div id="cntrList">
+        <tr th:each="ordmstvo : ${ordmstvo}">
+        <input type="text" id="hbl_no" th:value="${ordmstvo.hbl_no}"/>
+        <input type="text" id =svc_type />
+    </tr>
+
+    <table>
+        <thead>
+            <tr>
+                <th>CNTR NO </th>
+                <th>CNTR TYPE</th>
+            </tr>
+        </thead>
+             <tr th:each="ordcntr : ${ordcntrvo}">
+                <td th:text ="${ordcntr.cntr_no}"></td>
+                <td>테스트 제목 입니다.</td>
+            </tr> 
+    </table>
+</div>
+</form>
+<button type="button" onclick="getSelect()">조회하기 </button>
+
+<button type="button" onclick="getSave()">저장하기  </button>
+
+</body>
+<script type="text/javascript">
+    function getSelect() {
+        alert("ABC");
+        $.ajax({
+            type: "POST",
+            url: "/excel/cntrs",
+            // data: form, // api 호출을 위한 요청 변수가 필요하다면 사용해주세요.
+            dataType: "text"
+        })
+            .done(function (result) {
+                console.log(result);
+                $("#cntrList").replaceWith(result);
+            })
+            .fail(function(jqXHR) {
+                console.log(jqXHR);
+            })
+            .always(function() {
+                console.log("요청, 응답 결과에 상관없이, 이건 항상 실행됩니다.");
+            })
+    }
+
+    function getSave() {
+        var hbl_no = $("#hbl_no").val();
+        var svc_type = $("#svc_type").val();
+        var param = {"hbl_no":hbl_no, "svc_type":svc_type}
+
+
+        alert(hbl_no);
+
+        $.ajax({
+            type: "POST",
+            url: "/cntrs",
+             data: param, // api 호출을 위한 요청 변수가 필요하다면 사용해주세요.
+            dataType: "text"
+        })
+            .done(function (result) {
+                console.log(result);
+                alert("success");
+               // $("#cntrList").replaceWith(result);
+            })
+            .fail(function(jqXHR) {
+                console.log(jqXHR);
+            })
+            .always(function() {
+                console.log("요청, 응답 결과에 상관없이, 이건 항상 실행됩니다.");
+            })
+    }
+
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+</html>
