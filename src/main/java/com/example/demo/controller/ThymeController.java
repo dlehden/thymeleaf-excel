@@ -7,11 +7,9 @@ import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.tika.exception.TikaException;
 import org.springframework.stereotype.Controller;
@@ -21,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.vo.OrdCntrVO;
 import com.example.demo.vo.OrdMstVO;
@@ -94,8 +93,9 @@ public class ThymeController {
 
 
     @RequestMapping(value="/excel/read" , method=RequestMethod.POST)
-   public String excelRead(@RequestParam("file1") MultipartFile file, Model model) throws TikaException, IOException { // 2
-
+   public String excelRead(@RequestParam("uploadfile") MultipartFile file, Model model) throws TikaException, IOException { // 2
+       OrdCntrVO ordCntrVO = new OrdCntrVO();
+       List<OrdCntrVO> ordCntrVOs  = new ArrayList<>(); 
         try (InputStream is = file.getInputStream()) {
                     System.out.println("ABC");
                     String extension = FilenameUtils.getExtension(file.getOriginalFilename());
@@ -110,13 +110,13 @@ public class ThymeController {
 
                     for (int i = 0; i < worksheet.getPhysicalNumberOfRows(); i++) {
                         Row row = worksheet.getRow(i);
-                        
-                    
+                        ordCntrVO.setCntr_no(row.getCell(0).getStringCellValue());
+                        ordCntrVO.setCntr_type(row.getCell(1).getStringCellValue());
                         System.out.println(i + "라인");
                         System.out.println(row.getCell(0).getStringCellValue());
                         System.out.println(row.getCell(1).getStringCellValue());
-  
-                    
+                        ordCntrVOs.add(ordCntrVO);
+                        ordCntrVO = new OrdCntrVO();
                       //ExcelData data = new ExcelData();
                   
                       //dataList.add(data);
@@ -126,8 +126,10 @@ public class ThymeController {
         } catch (Exception e) {
             throw new TikaException("ERROR");
         }
-         return "redirect:/";
-         //return "index";
+        model.addAttribute("ordcntrvo", ordCntrVOs);
+        //redirectAttributes.addAttribute("ordcntrvo", ordCntrVOs);
+         //return "redirect:/index";
+         return "/index :: #cntrList";
     }
 
 

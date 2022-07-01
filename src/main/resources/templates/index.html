@@ -27,11 +27,21 @@
             </tr> 
     </table>
 </div>
+
+
 </form>
-<form th:action="@{/excel/read}" method="POST" enctype="multipart/form-data">
+<!-- <form th:action="@{/excel/read}" method="POST" enctype="multipart/form-data">
     <input type="file" th:name="file1">
-    <input th:type="submit" value="제출" />
-</form>
+    <input th:type="submit" value="ACTION EXCEL 제출" />
+</form> -->
+
+
+<form id="upload-file-form">
+    <input type="text" name="extra">
+    <label for="upload-file-input">Upload your file:</label>
+    <input id="upload-file-input" type="file" name="uploadfile" accept="*" />
+    <button type="button" onclick="uploadFile();">업로드</button>
+  </form>
 
 <button type="button" onclick="getSelect()">조회하기 </button>
 
@@ -39,6 +49,28 @@
 
 </body>
 <script type="text/javascript">
+function uploadFile() {
+  $.ajax({
+    url: "/excel/read",
+    type: "POST",
+    data: new FormData($("#upload-file-form")[0]),
+    enctype: 'multipart/form-data',
+    processData: false,
+    contentType: false,
+    cache: false,
+    success: function (result) {
+      // Handle upload success
+      // ...
+      alert("ABC");
+      $("#cntrList").replaceWith(result);
+    },
+    error: function () {
+      // Handle upload error
+      // ...
+      $("#cntrList").replaceWith(result);
+    }
+  });
+}
     function getSelect() {
         alert("ABC");
         $.ajax({
