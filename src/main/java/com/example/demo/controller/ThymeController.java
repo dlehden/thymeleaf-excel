@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -69,7 +70,8 @@ public class ThymeController {
 
     @RequestMapping(value="/cntrs" , method=RequestMethod.POST)
     @ResponseBody
-  public  String saveCntrs(OrdMstVO ordMstVO ){
+  public  String saveCntrs(OrdMstVO ordMstVO, @RequestParam("cntr_table")String cntr){
+        System.out.println(cntr);
         System.out.println(ordMstVO.getHbl_no());
         // OrdCntrVO ordCntrVO = new OrdCntrVO();
         // OrdMstVO ordMstVO = new OrdMstVO();

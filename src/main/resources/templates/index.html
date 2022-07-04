@@ -21,10 +21,12 @@
                 <th>CNTR TYPE</th>
             </tr>
         </thead>
+            <tbody id ="cntr_data">
              <tr th:each="ordcntr : ${ordcntrvo}">
                 <td th:text ="${ordcntr.cntr_no}"></td>
                 <td>테스트 제목 입니다.</td>
             </tr> 
+        </tbody>
     </table>
 </div>
 
@@ -94,11 +96,23 @@ function uploadFile() {
     function getSave() {
         var hbl_no = $("#hbl_no").val();
         var svc_type = $("#svc_type").val();
-        var param = {"hbl_no":hbl_no, "svc_type":svc_type}
+       var cntr_table="";
+        var rows = document.getElementById("cntr_data").getElementsByTagName("tr");
+          console.log(rows.length);	// tbody tr 개수 = 2
+   // tr만큼 루프돌면서 컬럼값 접근
+   for( var r=0; r<rows.length; r++ ){
+      var cells = rows[r].getElementsByTagName("td");
 
+      var cell_1 = cells[0].firstChild.data;		// 이름
+      var cell_2 = cells[1].firstChild.data;		// 나이
+ 
+      //console.log(cell_1);	// 홍길동, 김영희
+      //console.log(cell_2);	// 23, 25
+      cntr_table = cntr_table + cell_1 +","+cell_2+"&nbsp";
+    }
 
-        alert(hbl_no);
-
+    var param = {"hbl_no":hbl_no, "svc_type":svc_type,"cntr_table":cntr_table}
+    alert(cntr_table);
         $.ajax({
             type: "POST",
             url: "/cntrs",
