@@ -1,15 +1,17 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.crypto.Data;
-
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.mapper.TimeMapper;
 import com.example.demo.service.TestService;
+import com.example.demo.vo.OrdCntrVO;
 import com.example.demo.vo.OrdGroupVO;
+import com.example.demo.vo.OrdMstVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,4 +50,41 @@ public class TestController {
         log.info(ordGroupVO.get(0).getOrdMstVO().getHbl_no());
        return "resulttype-map" + ordGroupVO.toString();
     }
+
+    
+    @PostMapping("/cntrno")
+    //@GetMapping("/cntrno")
+	public ArrayList<OrdCntrVO> getOrderCntrVo(){
+        ArrayList<OrdCntrVO> cntrdata = new ArrayList<>();
+        for(int i=0; i <10; i++){
+        OrdCntrVO ordCntrVO = new OrdCntrVO();
+        if(i==9){
+            ordCntrVO.setCntr_no("mainmamaamamam"); 
+        }else {
+            ordCntrVO.setCntr_no("ABC");
+        }
+        
+        ordCntrVO.setCntr_type("20GP");
+
+        cntrdata.add(ordCntrVO);
+        
+       }
+       return cntrdata;
+    }
+
+       @GetMapping("/main")
+       //@GetMapping("/cntrno")
+       public ArrayList<OrdMstVO> getMain(){
+           ArrayList<OrdMstVO> maindata = new ArrayList<>();
+   
+            OrdMstVO ordMstVO = new OrdMstVO();
+            ordMstVO.setHbl_no("babcccbcbc");
+            ordMstVO.setSvc_type("FCL");
+   
+            maindata.add(ordMstVO);
+          
+
+
+        return maindata;
+	}
 }
