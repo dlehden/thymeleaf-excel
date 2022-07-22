@@ -51,6 +51,13 @@ public class TestController {
        return "resulttype-map" + ordGroupVO.toString();
     }
 
+    @GetMapping("/api/insetordtest")
+    public String testord(){
+        int value= testService.setTestInsert(); 
+ 
+       return "ok";
+    }
+
     
     @PostMapping("/cntrno")
     //@GetMapping("/cntrno")

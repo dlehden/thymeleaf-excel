@@ -13,9 +13,10 @@
 </head>
 
 <body>
+    <div id="box" style="width:300px;height:400px;">
     <h1>Main data</h1>
     BL NO <input text value="" name ="bl_no" id="bl_no">
-	<h1>Cntr Table</h1>
+	<h1>Cntr Table1</h1>
     <table id="cntrdata" class="display" width="100%" >
       
        <!-- Header Table -->
@@ -27,7 +28,8 @@
         </thead>
         
     </table>
-    
+
+</div>
     <script>
  $(document).ready(function() {
      $('#cntrdata').DataTable({
@@ -44,7 +46,12 @@
             "dataType": "json",
             "contentType": "application/json; charset=utf-8",
             "dataSrc" : function (d){
+                var data ;
                 document.getElementById("bl_no").value = JSON.stringify(d[9].cntr_no);
+                for(var i=0; i < d.length-1 ; i ++){
+                    console.log(d[i].cntr_no);
+                    data  = d[1];
+                }
                // alert(JSON.stringify(d[9].cntr_no));
                 return d;
             },

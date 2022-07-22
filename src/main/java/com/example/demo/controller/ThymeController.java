@@ -43,7 +43,7 @@ public class ThymeController {
         ordCntrVOs.add(ordCntrVO2);
         // log.info(ordCntrVO.getCntr_no()+"ABC");
         // model.addAttribute("ordcntrvo", ordCntrVOs);
-        return "index";
+        return "index";  
     }
 
     @RequestMapping(value="/excel/cntrs" , method=RequestMethod.POST)
